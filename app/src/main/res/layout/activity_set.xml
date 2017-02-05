@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="true">
+
+	<RelativeLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:id="@+id/activity_set"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context="com.example.zin.textbook.SetActivity">
+
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_marginLeft="20dp"
+			android:layout_marginRight="20dp"
+			>
+
+			<LinearLayout
+				android:id="@+id/lineset"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_horizontal|center_vertical"
+				android:orientation="vertical"
+				android:layout_marginTop="40dp"
+				>
+
+				<EditText
+					android:layout_margin="5dp"
+					android:id="@+id/editText"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:ems="10"
+					android:gravity="center_horizontal"
+					android:hint="原密码"
+					android:inputType="textPassword"
+					android:background="@drawable/shape2"/>
+
+				<EditText
+					android:layout_margin="5dp"
+					android:id="@+id/editText3"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:ems="10"
+					android:gravity="center_horizontal"
+					android:hint="新密码"
+					android:inputType="textPassword"
+					android:background="@drawable/shape2"/>
+
+				<EditText
+					android:layout_margin="5dp"
+					android:id="@+id/editText4"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:ems="10"
+					android:gravity="center_horizontal"
+					android:hint="再次确认新密码"
+					android:inputType="textPassword"
+					android:background="@drawable/shape2"/>
+
+			</LinearLayout>
+		</ScrollView>
+	</RelativeLayout>
+
+	<android.support.design.widget.FloatingActionButton
+		android:id="@+id/fab4"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom|right"
+		android:layout_margin="@dimen/fab_margin"
+		android:src="@drawable/right"
+		/>
+
+	<android.support.design.widget.FloatingActionButton
+		android:id="@+id/fab5"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom|end"
+		android:layout_marginBottom="@dimen/fab_margin"
+		android:layout_marginRight="90dp"
+		android:src="@drawable/close"
+		/>
+</android.support.design.widget.CoordinatorLayout>
