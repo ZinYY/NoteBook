@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity
 
 	LinearLayout line;
 	MyButton bt[] = new MyButton[N];
-	MyButton btdelete[] = new MyButton[N];
 
 	public void read() {
 		if (!file2.exists()) {
@@ -207,8 +206,10 @@ public class MainActivity extends AppCompatActivity
 		try {
 			br = new BufferedWriter(new FileWriter(file));
 			for (int i = 0; i < Num; i++) {
-				br.write(bt[i].secret + "\n" + bt[i].time + "\n" + bt[i].title + "\n" + bt[i].content);
-				br.write(trim_key);
+				if (bt[i].delete == false) {
+					br.write(bt[i].secret + "\n" + bt[i].time + "\n" + bt[i].title + "\n" + bt[i].content);
+					br.write(trim_key);
+				}
 			}
 			br.close();
 		} catch (IOException e) {
@@ -313,6 +314,7 @@ public class MainActivity extends AppCompatActivity
 
 
 	public void List_readd(boolean a) {
+
 		line.removeAllViews();
 		TextView tvn = new TextView(this);
 		tvn.setHeight(50);
@@ -366,11 +368,12 @@ public class MainActivity extends AppCompatActivity
 										break;
 
 									case 1:
-										//bt[ii].delete = !bt[ii].delete;
-										//line.removeView(bt[ii]);
-										//line.removeView(bt[ii].tv);
-										delete(ii);
-										List_readd(wdelete);
+										bt[ii].delete = !bt[ii].delete;
+										line.removeView(bt[ii]);
+										line.removeView(bt[ii].tv);
+										save();
+//										delete(ii);
+//										List_readd(wdelete);
 										break;
 								}
 
@@ -401,19 +404,27 @@ public class MainActivity extends AppCompatActivity
 		save();
 	}
 
-	public void delete(int a) {
-		btdelete[Numdelete] = bt[a];
-		Numdelete++;
-		if (Num > 1) {
-			for (int i = a; i < Num - 1; i++) {
-				bt[i] = bt[i + 1];
-			}
-			Num--;
-		} else {
-			Num--;
-		}
-
-	}
+//	public void delete(int a) {
+//
+//		btdelete[Numdelete] = bt[a];
+//		btdelete[Numdelete].setOnLongClickListener(new View.OnLongClickListener() {
+//			@Override
+//			public boolean onLongClick(View v) {
+//
+//				return false;
+//			}
+//		});
+//		Numdelete++;
+//		if (Num > 1) {
+//			for (int i = a; i < Num - 1; i++) {
+//				bt[i] = bt[i + 1];
+//			}
+//			Num--;
+//		} else {
+//			Num--;
+//		}
+//
+//	}
 
 	public void movetotop(int a) {
 		if (Num > 1) {
