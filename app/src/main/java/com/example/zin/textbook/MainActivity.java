@@ -1,8 +1,10 @@
 package com.example.zin.textbook;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -215,7 +217,6 @@ public class MainActivity extends AppCompatActivity
 
 	}
 
-	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -238,7 +239,21 @@ public class MainActivity extends AppCompatActivity
 				startActivityForResult(it, Num);
 			}
 		});
-		read();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			int hasWriteContactsPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+			if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+				requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
+			} else {
+				line = (LinearLayout) findViewById(R.id.line0);
+				read();
+				List_readd(wdelete);
+			}
+
+		} else {
+			line = (LinearLayout) findViewById(R.id.line0);
+			read();
+			List_readd(wdelete);
+		}
 		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
 			this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -250,10 +265,20 @@ public class MainActivity extends AppCompatActivity
 		SimpleDateFormat myFmt1 = new SimpleDateFormat("yyyy-MM-dd  hh:mm:ss");
 		Date now = new Date();
 		String rq = myFmt1.format(now);
-		line = (LinearLayout) findViewById(R.id.line0);
-		List_readd(wdelete);
+
+
 		LinearLayout line2 = (LinearLayout) findViewById(R.id.line2);
 		line2.setBackgroundColor(Color.parseColor("#EEEEEE"));
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (requestCode == 123) {
+			line = (LinearLayout) findViewById(R.id.line0);
+			read();
+			List_readd(wdelete);
+		}
 	}
 
 	@Override
