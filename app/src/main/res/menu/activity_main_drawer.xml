@@ -20,12 +20,12 @@
 		android:title="隐私密码设置"/>
 
 
-	<item android:title="觉得应用不错？分享给朋友吧！">
+	<item android:title="应用不错?给项目一个Star吧!">
 		<menu>
 			<item
 				android:id="@+id/nav_share"
-				android:icon="@drawable/ic_menu_share"
-				android:title="分享"/>
+				android:icon="@drawable/github"
+				android:title="项目GitHub页面"/>
 		</menu>
 	</item>
 

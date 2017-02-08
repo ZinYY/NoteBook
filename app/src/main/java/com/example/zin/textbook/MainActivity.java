@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -564,7 +565,11 @@ public class MainActivity extends AppCompatActivity
 			it.putExtra("ps", password);
 			startActivityForResult(it, N + 1);
 		} else if (id == R.id.nav_share) {
-			Toast.makeText(MainActivity.this, "分享我也不会写", Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent();
+			intent.setAction("android.intent.action.VIEW");
+			Uri content_url = Uri.parse("https://github.com/Zin-YY/NoteBook");
+			intent.setData(content_url);
+			startActivity(intent);
 		} else if (id == R.id.nav_rubbish) {
 			wdelete = item.isChecked();
 			List_readd(wdelete);

@@ -10,27 +10,44 @@
 
 ##主界面
 刚安装的软件是没有笔记的，只有右下角的新建笔记按钮还有侧边栏。
-![空的主界面](http://i.imgur.com/XzYXAo4.png)
+
+<img src="http://i.imgur.com/XzYXAo4.png" alt="空的主界面" width="400">
 
 侧边栏效果:
-可以显示隐藏项，垃圾站(TODO)，设置隐私密码以及分享(TODO)。
+可以显示隐藏项，垃圾站，设置隐私密码以及访问项目的GitHub页面。
 
 当您点击了显示隐私项之后，项目上的锁闭合的图表会变为锁开启，并且项目会变为选中状态。再次点击之后则取消此效果。(设置了密码后需要验证密码才能显示隐私项)
-![侧边栏](http://i.imgur.com/5tOuRuq.png)
+
+<img src="http://i.imgur.com/XR6Z1Z8.png" alt="侧边栏" width="400">
+<img src="http://i.imgur.com/TbMZtbY.png" alt="侧边栏2" width="400">
 
 添加了写一些笔记之后，界面就充实了。里面的按钮和阴影是通过shape自行绘制的。
-![有笔记后的主界面](http://i.imgur.com/ydXlqYj.png)
+
+<img src="http://i.imgur.com/ydXlqYj.png" alt="有笔记后的主界面" width="400">
 
 长按一篇文章，可以进行隐藏，删除，或是取消操作。
-![长按文章](http://i.imgur.com/t51T98G.png)
+
+<img src="http://i.imgur.com/t51T98G.png" alt="长按文章" width="400">
 
 ##查看(编辑)文章
 点击一条文章，打开后的效果:
-![查看(编辑)文章](http://i.imgur.com/7SbyJ0E.png)
+
+<img src="http://i.imgur.com/7SbyJ0E.png" alt="查看(编辑)文章" width="400">
 
 ##隐私密码的设置
 设置密码的界面:
-![设置密码1](http://i.imgur.com/Tk2Kn73.png)
+
+<img src="http://i.imgur.com/Tk2Kn73.png" alt="设置密码1" width="400">
 
 如果已经设置了密码，则会变为更改密码的界面:
-![设置密码2](http://i.imgur.com/rPCqzTG.png)
+
+<img src="http://i.imgur.com/rPCqzTG.png" alt="设置密码2" width="400">
+
+##回收站界面
+回收站内会出现在主界面被删除的文章，不过一旦退出程序，这里的笔记将会被清空。
+
+<img src="http://i.imgur.com/4pfSDni.png" alt="回收站界面" width="400">
+
+长按回收站的笔记，可以选择恢复(又将出现在主界面并被保存)
+
+<img src="http://i.imgur.com/8xsO2uS.png" alt="回收站界面2" width="400">
