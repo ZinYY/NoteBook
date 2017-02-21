@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
@@ -25,10 +26,13 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity
 	final String F = "/存档.txt";
 	final String F2 = "/ps.txt";
 	final String trim_key = "@#$%^&*sss..--///This is a seperator///--..sss!@#$%^&*";
+
 	File path = new File(PATH);
 	File file = new File(PATH + F);
 	File file2 = new File(PATH + F2);
@@ -83,9 +88,12 @@ public class MainActivity extends AppCompatActivity
 	}
 
 	LinearLayout line;
+	SearchView mSearchView ;
 	MyButton bt[] = new MyButton[N];
 
 	public void read() {
+
+
 		if (!file2.exists()) {
 			password = "";
 		} else {
@@ -226,7 +234,59 @@ public class MainActivity extends AppCompatActivity
 			e.printStackTrace();
 		}
 
+	}
 
+	public void firstrun() {
+		SharedPreferences sharedPreferences = this.getSharedPreferences("share", MODE_PRIVATE);
+		boolean isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		if (isFirstRun) {
+			if (!path.exists()) {
+				path.mkdirs();
+			}
+			if (!file.exists()) {
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			BufferedWriter br = null;
+			try {
+				br = new BufferedWriter(new FileWriter(file));
+				SimpleDateFormat myFmt1 = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
+				Date now = new Date();
+				String rq = myFmt1.format(now);
+				br.write("false\n" + rq + "\n");
+				br.write("欢迎使用Zin's Studio打造的NoteBook!\n" +
+					"\n" +
+					"允许我为您简单的介绍下使用方法:\n" +
+					"\n" +
+					"1.点击主界面右下角的按钮以新建笔记\n" +
+					"\n" +
+					"2.点击一篇笔记以查看/编辑\n" +
+					"\n" +
+					"3.长按一篇笔记以隐藏、删除该笔记\n" +
+					"\n" +
+					"4.滑出侧边栏以查看隐藏的文件、回收站或是设置隐私密码\n" +
+					"\n" +
+					"5.在回收站中，长按笔记以恢复。\n" +
+					"\n" +
+					"6.回收站的文件会在退出时被清空哦！\n" +
+					"\n" +
+					"\n" +
+					"愿这个软件让您满意！  ——Zin");
+				br.write(trim_key);
+
+
+				br.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			editor.putBoolean("isFirstRun", false);
+			editor.commit();
+		}
 	}
 
 	public void save() {
@@ -263,7 +323,7 @@ public class MainActivity extends AppCompatActivity
 		setContentView(R.layout.activity_main);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
-		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -278,18 +338,21 @@ public class MainActivity extends AppCompatActivity
 				startActivityForResult(it, Num);
 			}
 		});
+
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			int hasWriteContactsPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 			if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
 				requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
 			} else {
 				line = (LinearLayout) findViewById(R.id.line0);
+				firstrun();
 				read();
 				List_readd(wdelete);
 			}
 
 		} else {
 			line = (LinearLayout) findViewById(R.id.line0);
+			firstrun();
 			read();
 			List_readd(wdelete);
 		}
@@ -308,6 +371,68 @@ public class MainActivity extends AppCompatActivity
 
 		LinearLayout line2 = (LinearLayout) findViewById(R.id.line2);
 		line2.setBackgroundColor(Color.parseColor("#EEEEEE"));
+
+		mSearchView = (SearchView) findViewById(R.id.search_text);
+
+		mSearchView.setIconifiedByDefault(false);
+		//设置显示收索按钮
+		mSearchView.setQueryHint("查找");
+
+		mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				line.removeAllViews();
+				TextView tvn = new TextView(MainActivity.this);
+				tvn.setHeight(50);
+				line.addView(tvn);
+				if (newText.equals("")) {
+					List_readd(wdelete);
+				} else {
+					final LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+						LinearLayout.LayoutParams.MATCH_PARENT,
+						LinearLayout.LayoutParams.WRAP_CONTENT
+					);
+					p.setMargins(0, 0, 0, 50);
+					for (int i = 0; i < Num; i++) {
+						if (judgesecret == 1 || (judgesecret == 0 && bt[i].secret == false)) {
+							if (bt[i].title.indexOf(newText) != -1) {
+								bt[i].setText("  " + bt[i].title);
+								line.addView(bt[i].tv);
+								line.addView(bt[i], p);
+							} else {
+								if (bt[i].content.indexOf(newText) != -1) {
+									bt[i].setText("  "+ bt[i].title.substring(0,Math.min(5,bt[i].title.length()))+"...    " + bt[i].content.substring(bt[i].content.indexOf(newText), bt[i].content.length()));
+									line.addView(bt[i].tv);
+									line.addView(bt[i], p);
+								} else {
+									if (bt[i].time.indexOf(newText) != -1) {
+										bt[i].setText("  " + bt[i].title);
+										line.addView(bt[i].tv);
+										line.addView(bt[i], p);
+									}
+								}
+							}
+						}
+					}
+				}
+				return false;
+			}
+		});
+		ScrollView sl = (ScrollView)findViewById(R.id.btscore);
+		sl.setOnTouchListener(new View.OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				mSearchView.clearFocus();
+				return false;
+			}
+		});
 	}
 
 	@Override
@@ -315,6 +440,7 @@ public class MainActivity extends AppCompatActivity
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		if (requestCode == 123) {
 			line = (LinearLayout) findViewById(R.id.line0);
+			firstrun();
 			read();
 			List_readd(wdelete);
 		}
@@ -420,10 +546,20 @@ public class MainActivity extends AppCompatActivity
 					return false;
 				}
 			};
+			View.OnTouchListener vtouc = (new View.OnTouchListener(){
+
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					mSearchView.clearFocus();
+					return false;
+				}
+			});
 			bt[i].setOnLongClickListener(volc);
 			bt[i].tv.setOnLongClickListener(volc);
 			bt[i].tv.setText(bt[i].time);
 			bt[i].setText("  " + bt[i].title);
+			bt[i].setOnTouchListener(vtouc);
+			bt[i].tv.setOnTouchListener(vtouc);
 			if (!bt[i].delete == a) {
 				if (bt[i].secret == true) {
 					if (judgesecret == 1) {
